@@ -1,11 +1,17 @@
 package br.com.mildevs.mildevspecaapi.Service;
 
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.mildevs.mildevspecaapi.DTO.AtualizaPecaDTO;
+import br.com.mildevs.mildevspecaapi.DTO.CriarPecaDTO;
+import br.com.mildevs.mildevspecaapi.DTO.RetornaPecaDTO;
 import br.com.mildevs.mildevspecaapi.Entity.Categoria;
 import br.com.mildevs.mildevspecaapi.Entity.Peca;
 import br.com.mildevs.mildevspecaapi.Exception.ErroNegocioException;
@@ -19,66 +25,98 @@ public class PecaService {
 	
 	//criar 
 	
-	public boolean inserirNovaPeca(Peca Peca) throws ErroNegocioException {
-		
-		if(repoPeca.existsById(Peca.getCodBarra())){
-			
-			throw new ErroNegocioException("Já existe uma Peca com esse código!") ;
-			
-		}
-		this.repoPeca.save(Peca);
+	public boolean inserirNovaPeca(CriarPecaDTO pecaDto) {
+		this.repoPeca.save(pecaDto.toEntity());
 		return true;
 	}
 	
-	public Peca AtualizaPeca(Peca Peca) {
-		if(!repoPeca.existsById(Peca.getCodBarra())){
-			
-			return null;
+	public RetornaPecaDTO AtualizaPeca(AtualizaPecaDTO atualizarPeca, Long  codBarra)throws ErroNegocioException  {
+		Optional<Peca> pecaPesquisada = repoPeca.findBycodBarra(codBarra);
+		if (pecaPesquisada.isEmpty()) {
+			throw new ErroNegocioException("Não existe nenhuma peça com esse código!");
 		}
 		
-		this.repoPeca.save(Peca);
-		return Peca;
-	}
-	
-	public List<Peca> listaPecas (){
-		return (List<Peca>)repoPeca.findAll();
-	}
-	
-	public Peca buscarPeca (Long  codBarra) {
-		Optional<Peca> Peca = repoPeca.findById(codBarra);
+		pecaPesquisada.get().setPrecoCusto(atualizarPeca.getPrecoCusto());
+		pecaPesquisada.get().setPrecoVenda(atualizarPeca.getPrecoVenda());
+		pecaPesquisada.get().setQuantEstoque(atualizarPeca.getQuantEstoque());
+		this.repoPeca.save(pecaPesquisada.get());
 		
-		if(Peca.isPresent()) {
+		RetornaPecaDTO pecaDto = new RetornaPecaDTO();
+		BeanUtils.copyProperties(pecaPesquisada.get(), pecaDto);
+		return pecaDto;
+	}
+	
+	public List<RetornaPecaDTO> listaPecas (){
+		List<Peca> pecas = repoPeca.findAll();
+		List<RetornaPecaDTO> retornaPecasDto = new ArrayList<>();
+		
+		for(Peca peca : pecas) {
+			RetornaPecaDTO pecaDto = new RetornaPecaDTO();
+			BeanUtils.copyProperties(peca, pecaDto);
+			retornaPecasDto.add(pecaDto);
 			
-		
 		}
+	
+		return retornaPecasDto;
+	}
+	
+	
+	public Optional<RetornaPecaDTO> buscarPeca (Long  codBarra) {
+		Optional<RetornaPecaDTO> pecaDto = Optional.of(new RetornaPecaDTO());
+		Optional<Peca> peca = repoPeca.findBycodBarra(codBarra);
+		BeanUtils.copyProperties(peca.get(), pecaDto.get());
 		
-		
-		return Peca.get();
+		return pecaDto;
 	}
 	
 	
 	
 	public boolean removePeca (Long codBarra ) {
-		
-		if(!repoPeca.existsById(codBarra)) {
-			return false;
-		}
-		
 		this.repoPeca.deleteById(codBarra);
 		return true;
 	}
 
-	public List<Peca> buscarPecaPorModelo(String modelo) {
-		List<Peca> buscaModelo;
-		return buscaModelo = repoPeca.findBymodeloCarro(modelo);
+	public List<RetornaPecaDTO> buscarPecaPorModelo(String modelo) throws ErroNegocioException  {
 		
+		List<RetornaPecaDTO> retornaPecasDto = new ArrayList<>();
+		List<Peca> pecasPorModelo = repoPeca.findBymodeloCarro(modelo);
 		
+		if (repoPeca.findBymodeloCarro(modelo).isEmpty()) {
+			
+			throw new ErroNegocioException("Não existe nenhuma peça com esse modelo!");
+		}
+		
+		for(Peca peca : pecasPorModelo) {
+			RetornaPecaDTO pecaDto = new RetornaPecaDTO();
+			BeanUtils.copyProperties(peca, pecaDto);
+			retornaPecasDto.add(pecaDto);
+			
+		}
+	
+		return retornaPecasDto;
 	
 	}
 
-	public List<Peca> buscarPecaPorCategoria(Categoria categoria) {
-		List<Peca> buscaCategoria;
-		return buscaCategoria = repoPeca.findBycategoria(categoria);
+	public List<RetornaPecaDTO> buscarPecaPorCategoria(Categoria categoria) throws ErroNegocioException  {
+		List<RetornaPecaDTO> retornaPecasDto = new ArrayList<>();
+		List<Peca> pecas = repoPeca.findBycategoria(categoria);
+		
+		if (repoPeca.findBycategoria(categoria).isEmpty()) {
+			
+			throw new ErroNegocioException("Não existe nenhuma peça com essa categoria!");
+		}
+		
+		
+		for(Peca peca : pecas) {
+			RetornaPecaDTO pecaDto = new RetornaPecaDTO();
+			BeanUtils.copyProperties(peca, pecaDto);
+			retornaPecasDto.add(pecaDto);
+			
+		}
+	
+		return retornaPecasDto;
+		
+
 	}
 	
 	

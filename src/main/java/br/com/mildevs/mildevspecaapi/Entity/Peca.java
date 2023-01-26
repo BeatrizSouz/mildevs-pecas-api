@@ -4,9 +4,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 
 @Entity
@@ -14,36 +14,34 @@ public class Peca {
 	
 	@Id
 	@Column(name="codigo_barras",  nullable = false)
-	@NotNull(message = "O código de barras não pode ser nulo")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long codBarra;
 	
 	@Column(name = "nome_Peca", nullable = false)
-	@NotBlank(message = "O nome da Peca deve ser preenchida")
+	
 	private String nomePeca;
 	
 	@Column(name = "modelo_do_carro",  nullable = false)
-	@NotBlank(message = "O modelo do carro deve ser preenchido")
+	
 	private String modeloCarro;
 	
 	@Column( nullable = false)
-	@NotBlank(message = "O nome do fabricante deve ser preenchido")
+	
 	private String nomeFabricante;
 	
 	@Column( nullable = false)
-	@NotNull(message = "O preço não pode ser nulo")
 	private double precoCusto;
 	
 	@Column( nullable = false)
-	@NotNull(message = "O preço de venda não pode ser nulo")
 	private double precoVenda;
 	
 	@Column( nullable = false)
-	@NotNull(message = "A quantidade de estoque não pode ser nula")
 	private int quantEstoque;
 	
 	@Column(name = "Tipo_categoria",  nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Categoria categoria;
+
 
 	public Long getCodBarra() {
 		return codBarra;
