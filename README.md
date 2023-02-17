@@ -12,7 +12,7 @@
 
 > Projeto API de peças de uma carro com Spring Rest, que realiza as operações de criar, listar, atualizar e deletar as peças, além de conter validações de entrada e tratamento de exceções.
 
-## 💻Tecnologias usadas
+## 💻 Tecnologias usadas
 ![java logo](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)
 ![spring logo](https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
 ![postgresql logo](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
@@ -21,13 +21,13 @@
 ![github logo](https://img.shields.io/badge/Git-E34F26?style=for-the-badge&logo=git&logoColor=white)
 
 
-## 🔧Modelo de relacionamento
+## 🔧 Modelo de relacionamento
 
 ![image](https://user-images.githubusercontent.com/112733336/219743684-bb999daf-8c97-49bd-b2c6-c199f818b669.png)
 
 
 
-## ⚙Funções:
+## ⚙ Funções:
 
 O projeto abragem as seguintes tarefas:
 
@@ -58,7 +58,6 @@ spring.datasource.password=123456
 ```
 
 ## 😄 Contato da desenvolvedora <br>
-
 <p>
 
 <div align="left"> 
@@ -66,4 +65,4 @@ spring.datasource.password=123456
   <a href="https://www.linkedin.com/in/beatriz-de-souza-carvalho/" target="_blank"><img height="28cm" src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a>    
 </div>	
 
-[⬆ Voltar ao topo](#nome-do-projeto)<br>
+[⬆ Voltar ao topo](#mildevs-pecas-api)<br>
